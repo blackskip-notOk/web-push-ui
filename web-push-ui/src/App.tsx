@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 import { askPermission, isPushNotificationSupported, registerServiceWorker, sendNotification } from './webPush/notification'
-import { Checkbox } from './components/common/checkbox/Checkbox';
+// import { Checkbox } from './components/common/checkbox/Checkbox';
 
 function App() {
 
@@ -19,7 +19,10 @@ function App() {
       referrerPolicy: 'no-referrer',
       body: JSON.stringify({ userId: 1 }),
     });
-    // setPublicKey(response.body);
+
+    const keys = await response.json();
+
+    setPublicKey(keys.publicKey);
 
     console.log(response.json);
   };
@@ -49,6 +52,7 @@ function App() {
         <button onClick={handleCreateVapidKeys}>
           create VAPID keys
         </button>
+        <h2 style={{ maxWidth: '100px' }}>{publicKey}</h2>
         <button onClick={registerServiceWorker}>
           Register Service Worker
         </button>
@@ -62,7 +66,7 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-      <Checkbox />
+      {/* <Checkbox /> */}
     </div>
   )
 }

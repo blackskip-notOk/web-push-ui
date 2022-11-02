@@ -95,4 +95,18 @@ export function sendNotification() {
 	navigator.serviceWorker.ready.then((serviceWorker) => {
 		serviceWorker.showNotification(title, options);
 	});
-}
+};
+
+self.addEventListener('activate', (event) => {
+	var cacheKeeplist = ['v2'];
+	// @ts-ignore
+	event.waitUntil(
+		caches.keys().then((keyList) => {
+		  return Promise.all(keyList.map((key) => {
+			if (cacheKeeplist.indexOf(key) === -1) {
+			  return caches.delete(key);
+			}
+		  }));
+		})
+	  );
+})
